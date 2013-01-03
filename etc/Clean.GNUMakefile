@@ -1,0 +1,6 @@
+RM=rm -f 
+TO_DELETE=*.o .*.sw* *~
+DIRS=${shell ls -d */}
+
+all:
+	@${RM} ${foreach dir, ${DIRS},${foreach md, ${TO_DELETE},${dir}${md}}}

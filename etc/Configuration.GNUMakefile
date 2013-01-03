@@ -1,0 +1,8 @@
+CC =gcc
+CPP=g++
+AS =nasm
+
+CFLAGS   =-c -iquote -I${ALPHAOS_BASE} -I${ALPHAOS_BASE}/include/ -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -fno-stack-protector -O2 -m32
+CPP_FLAGS=${CFLAGS} -nostartfiles -nodefaultlibs -fno-rtti
+AS_FLAGS =-felf 
+LD_FLAGS =-T${ALPHAOS_BASE}/etc/linker.ld -m elf_i386 -o ${ALPHAOS_BASE}/build/kernel.bin ${ALPHAOS_BASE}/build/*.o

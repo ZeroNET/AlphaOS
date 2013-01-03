@@ -1,0 +1,16 @@
+#!/usr/bin/env perl
+
+use warnings;
+use strict;
+use Cwd 'abs_path';
+use File::Path;
+
+my $path = abs_path($0);
+
+$path =~ s/\/bin\/.+$//;
+
+mkpath($path . "/build/iso/boot/grub");
+
+`cp $path/build/kernel.bin $path/build/iso/boot/alphaos.bin`;
+`echo 'set timeout=15\nsetdefault=0\n\nmenuentry "AlphaOS Kernel" {\n multiboot /boot/alphaos.bin\n boot\nmodule /initrd\n}'>$path/build/iso/boot/grub/grub.cfg`;
+`grub-mkrescue -o $path/alphaos.iso $path/build/iso`;

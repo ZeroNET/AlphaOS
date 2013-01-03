@@ -1,0 +1,23 @@
+# Functions for outputing things.
+
+#region Configuration
+
+STR_C  =Compiling \033[1;31mC\033[0m         Source\t
+STR_CPP=Compiling \033[1;32mC++\033[0m       Source\t
+STR_ASM=Compiling \033[1;34mAssembley\033[0m Source\t
+
+FMT_C  =\033[1;32m%s\033[0m
+FMT_CPP=${FMT_C}
+FMT_ASM=${FMT_C}
+
+DELIM_C  =[[ ]]
+DELIM_CPP={{ }}
+DELIM_ASM=(( ))
+
+#endregion
+
+
+define compiling
+	@echo "${STR_$1}${word 1, ${DELIM_$1}}\033[0m ${shell python -c 'print "${FMT_$1}" % "$2"'} ${word 2, ${DELIM_$1}}\033[0m"
+endef
+

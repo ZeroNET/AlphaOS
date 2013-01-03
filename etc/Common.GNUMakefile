@@ -1,0 +1,31 @@
+include ${ALPHAOS_BASE}/etc/Configuration.GNUMakefile
+include ${ALPHAOS_BASE}/etc/Output.GNUMakefile
+
+FILES=${shell find . -type f -name '*.*' | xargs -n1 basename 2>/dev/null}
+
+ASM_SRC=${filter %.asm, ${FILES}}
+
+C_SRC=${filter %.c, ${FILES}}
+
+CPP_SRC=${filter %.cpp, ${FILES}}
+
+ODIR=${ALPHAOS_BASE}/build
+
+TO_BE_BUILT=${C_SRC:%.c=%.o} ${ASM_SRC:%.asm=%.asm_o} ${CPP_SRC:%.cpp=%.o}
+
+all: ${TO_BE_BUILT}
+
+.c.o: ${C_SRC}
+	${call compiling,C,$<}
+	@${CC} ${CFLAGS} -o ${ODIR}/$*.o $<
+
+%.asm_o:
+	${call compiling,ASM,$*.asm}
+	@${AS} ${AS_FLAGS} -o ${ODIR}/$*.o $*.asm
+
+.cpp.odr:
+	${call compiling,CPP,$<}
+	${eval FILE=$<}
+	@${CPP} ${CPP_FLAGS} -o ${ODIR}/${FILE:%.cpp=%.o} $<
+
+# vim: so $VIMRUNTIME/syntax/make.vim
